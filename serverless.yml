@@ -1,0 +1,38 @@
+service: aws-node # NOTE: update this with your service name
+
+frameworkVersion: "3"
+plugins:
+  - serverless-dotenv-plugin
+custom:
+  dotenv:
+    # default: project root
+    # path: .env
+    include:
+      - MYSQL_DATABASE_NAME
+      - MYSQL_DATABASE_USERNAME
+      - MYSQL_DATABASE_PASSWORD
+      - MYSQL_DATABASE_HOST
+      - MYSQL_DATABASE_PORT
+      - MYSQL_DATABASE_DIALECT
+      - DB_ENV
+provider:
+  name: aws
+  runtime: nodejs14.x
+  vpc:
+    securityGroupIds: ${file(./config.json):lambdaExecSecurityGroups}
+    subnetIds: ${file(./config.json):subnets}
+    # ${env:FUNC_PREFIX}
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors: true
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+    timeout: 30

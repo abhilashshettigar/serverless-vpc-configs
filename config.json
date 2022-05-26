@@ -1,0 +1,5 @@
+{
+    
+    "subnets": ["subnet-0c326debae78832de","subnet-03db19bcbdd35eae1","subnet-07340d57f636b01af"],
+    "lambdaExecSecurityGroups": ["sg-2df78042"]
+}
